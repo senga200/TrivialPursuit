@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivial Pursuit</title>
+    <script src="https://kit.fontawesome.com/21df0f8715.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+    <main>
+        <h1>Trivial Pursuit</h1>
+
+        <div class="bidule">
+            <i class="fa-solid fa-location-dot"></i>
+        </div>
+
+        <div class="roue">
+            <div class="segment" style="background-color: #db642b;"><span class="titreTheme">sciences</span></div>
+            <div class="segment" style="background-color: #349ed8;"><span class="titreTheme">histoire</span></div>
+            <div class="segment" style="background-color: #187257;"><span class="titreTheme">musique</span></div>
+            <div class="segment" style="background-color: #e6c93f;"><span class="titreTheme">culture générale</span></div>
+            <div class="segment" style="background-color: #da68b0;"><span class="titreTheme">arts</span></div>
+            <div class="segment" style="background-color: #7a543d;"><span class="titreTheme">divertissement</span></div>
+        </div>
+        
+        <div class="container" data-question-id="1">
+            <div class="question-section">
+                <p id="question">Cliquez sur la roue pour selectionner un thème au hasard</p>
+            </div>
+            <input type="text" id="answer" name="answer" placeholder="Entrez votre réponse...">
+            <button class="submit-answer" id="submit-answer">Envoyer</button>
+            <div class="choix-section">
+                <button id="show">Besoin d'aide ?</button class>
+                <div id="choix">
+
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+</main>
+    <script src="app.js"></script>
+</body>
+</html>

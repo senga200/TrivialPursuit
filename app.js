@@ -1,4 +1,4 @@
-/////////LE DOM !!!!
+/////////LE DOM
 const roue = document.querySelector(".roue");
 const segments = document.querySelectorAll(".segment");
 const question = document.getElementById("question");
@@ -22,132 +22,34 @@ function spinWheel() {
   roue.style.transform = `rotate(${currentRotation}deg)`;
 
   // Après la rotation, trouver le segment sélectionné
-  roue.addEventListener("transitionend", () => {
-    const selectedSegment = Math.floor((360 - (currentRotation % 360)) / 60);
-    selectedCategory = segments[selectedSegment].textContent.trim();
-    console.log(`Le thème sélectionné est : ${selectedCategory}`);
+  roue.addEventListener(
+    "transitionend",
+    () => {
+      const selectedSegment = Math.floor((360 - (currentRotation % 360)) / 60);
+      selectedCategory = segments[selectedSegment].textContent.trim();
+      console.log(`Le thème sélectionné est : ${selectedCategory}`);
 
-    // Appeler giveAQuestion avec la catégorie sélectionnée
-    giveAQuestion(selectedCategory);
-  });
+      // Appeler giveAQuestion avec la catégorie sélectionnée
+      giveAQuestion(selectedCategory);
+    }
+    //{ once: true }
+  );
 }
 roue.addEventListener("click", spinWheel);
 
-/////// QUESTIONS !!!!
+/////// QUESTIONS DANS UNE CONSTANTE CAR PAS DE SERVEUR LOCAL ICI. A REMPLACER PAR LE FICHIER JSON ASAP :
 
 async function fetchQuestions() {
   try {
-    const response = await fetch("questions.json");
+    const response = await fetch("/questions.json");
     if (!response.ok) {
-      throw new Error(
-        "erreur dans ton fetch sur le try !!! " + response.status
-      );
+      throw new Error("erreur dans ton fetch !!! " + response.status);
     }
     const data = await response.json();
-    // const data = {
-    //     "quizz": {
-    //         "arts": {
-    //             "débutant": [
-    //                 {
-    //                     "id": 1,
-    //                     "question": "Qui est responsable, sur le plan artistique, de la création d'une affiche ?",
-    //                     "propositions": [
-    //                         "Affichiste",
-    //                         "Designer",
-    //                         "Cartonnier",
-    //                         "Ciseleur"
-    //                     ],
-    //                     "reponse": "Affichiste",
-    //                     "anecdote": "En France, des peintres renommés comme Henri de Toulouse-Lautrec ne dédaignent pas de travailler sur des affiches."
-    //                 }
-    //             ]
-    //         },
-    //         "divertissement": {
-    //             "débutant": [
-    //                 {
-    //                     "id": 2,
-    //                     "question": "Quel est le nom du personnage principal de la série 'Breaking Bad' ?",
-    //                     "propositions": [
-    //                         "Walter White",
-    //                         "Jesse Pinkman",
-    //                         "Saul Goodman",
-    //                         "Gus Fring"
-    //                     ],
-    //                     "reponse": "Walter White",
-    //                     "anecdote": "Bryan Cranston, qui joue Walter White, a remporté plusieurs Emmy Awards pour son rôle."
-    //                 }
-    //             ]
-    //         },
-    //         "culture générale": {
-    //             "débutant": [
-    //                 {
-    //                     "id": 3,
-    //                     "question": "Quelle est la capitale de la France ?",
-    //                     "propositions": [
-    //                         "Paris",
-    //                         "Londres",
-    //                         "Berlin",
-    //                         "Madrid"
-    //                     ],
-    //                     "reponse": "Paris",
-    //                     "anecdote": "Paris est connue comme la 'Ville Lumière'."
-    //                 }
-    //             ]
-    //         },
-    //         "musique": {
-    //             "débutant": [
-    //                 {
-    //                     "id": 4,
-    //                     "question": "Quel groupe a chanté 'Bohemian Rhapsody' ?",
-    //                     "propositions": [
-    //                         "Queen",
-    //                         "The Beatles",
-    //                         "The Rolling Stones",
-    //                         "Pink Floyd"
-    //                     ],
-    //                     "reponse": "Queen",
-    //                     "anecdote": "'Bohemian Rhapsody' est l'une des chansons les plus célèbres de Queen, sortie en 1975."
-    //                 }
-    //             ]
-    //         },
-    //         "histoire": {
-    //             "débutant": [
-    //                 {
-    //                     "id": 5,
-    //                     "question": "Qui était le premier président des États-Unis ?",
-    //                     "propositions": [
-    //                         "George Washington",
-    //                         "Thomas Jefferson",
-    //                         "Abraham Lincoln",
-    //                         "John Adams"
-    //                     ],
-    //                     "reponse": "George Washington",
-    //                     "anecdote": "George Washington est souvent appelé le 'Père de son pays'."
-    //                 }
-    //             ]
-    //         },
-    //         "sciences": {
-    //             "débutant": [
-    //                 {
-    //                     "id": 6,
-    //                     "question": "Quel est l'élément chimique ayant pour symbole 'O' ?",
-    //                     "propositions": [
-    //                         "Oxygène",
-    //                         "Or",
-    //                         "Osmium",
-    //                         "Oganesson"
-    //                     ],
-    //                     "reponse": "Oxygène",
-    //                     "anecdote": "L'oxygène est essentiel à la respiration des organismes vivants."
-    //                 }
-    //             ]
-    //         }
-    //     }
-    // };
 
     return data;
   } catch (error) {
-    console.error("erreur dans ton fetch sur le catch !!", error);
+    console.error("Problème dans ton fetch !!", error);
   }
 }
 
@@ -212,21 +114,53 @@ function showPropositions() {
 }
 giveAQuestion();
 
-// à voir pour les accents : methode normalize é è à puis replace e,e a
-// ou carrément la distance de Levenshtein !
+function DistanceDeLevenshtein(a, b) {
+  const matrix = [];
+
+  // Initialiser la première ligne et la première colonne de la matrice
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  // Remplir la matrice en comparant chaque caractère des chaînes
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // Substitution
+          matrix[i][j - 1] + 1, // Insertion
+          matrix[i - 1][j] + 1 // Suppression
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
 
 function submitAnswer() {
   const userAnswer = userInput.value.trim().toLowerCase();
   const currentAnswerLowerCase = currentAnswer.toLowerCase();
+
   console.log(userAnswer);
   if (userAnswer === "") {
     console.log("vide");
-
     userInput.style.backgroundColor = "#E23B3B";
     userInput.style.boxShadow = "none";
     question.classList.add("noSelectedQuestion");
     return;
-  } else if (userAnswer === currentAnswerLowerCase) {
+  }
+
+  // Vérification avec la distance de Levenshtein
+  const levenshteinTolerance = 2; // Tolérance de 2 changements
+  const distance = DistanceDeLevenshtein(userAnswer, currentAnswerLowerCase);
+
+  if (distance <= levenshteinTolerance) {
     console.log("ok");
     userInput.style.backgroundColor = "#59F9A3";
     userInput.classList.add("correct-answer");
@@ -237,7 +171,15 @@ function submitAnswer() {
     userInput.style.boxShadow = "none";
   }
 }
+
 submitInput.addEventListener("click", submitAnswer);
+
+userInput.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    submitAnswer();
+  }
+});
 
 function submitButton(propositionChoisie, buttonElement) {
   if (propositionChoisie === currentAnswer) {
